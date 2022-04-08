@@ -9,9 +9,10 @@ MODEL:
   embed_feat: 0
   dropout: 0.
 
+  # Domain-Specific Batch Normalization
   dsbn: True
 
-  sync_bn: True
+  sync_bn: False
   samples_per_bn: 16
 
   mean_net: False
@@ -53,13 +54,13 @@ DATA:
 TRAIN:
   seed: 1
   deterministic: True
-  # mixed precision training for PyTorch>=1.6
-  amp: False
+  # # mixed precision training for PyTorch>=1.6
+  # amp: False
 
   # datasets
-  datasets: {'market1501': 'trainval',}
-  # datasets: {'market1501': 'trainval', 'dukemtmcreid': 'trainval'}
-  unsup_dataset_indexes: [0,]
+  # datasets: {'market1501': 'trainval',}
+  datasets: {'market1501': 'trainval', 'dukemtmcreid': 'trainval'}  # joint training
+  unsup_dataset_indexes: [1,]  # UDA: Duke2Market
 
   epochs: 50
   iters: 400
@@ -69,7 +70,7 @@ TRAIN:
     margin: 0.
 
   # validate
-  val_dataset: 'market1501'
+  val_dataset: 'dukemtmcreid'
   val_freq: 5
 
   # sampler
@@ -79,7 +80,7 @@ TRAIN:
 
   # data loader
   LOADER:
-    samples_per_gpu: 16
+    samples_per_gpu: 8 # indicate the batch size in forwarding the support dataset
     workers_per_gpu: 2
 
   # pseudo labels
@@ -105,7 +106,7 @@ TRAIN:
   # optim
   OPTIM:
     optim: 'adam'
-    lr: 0.00035
+    lr: 0.00014  # 需要和batchsize一起做正相关调整
     weight_decay: 0.0005
 
   SCHEDULER:
@@ -115,7 +116,8 @@ TRAIN:
 TEST:
 
   # datasets
-  datasets: ['market1501',]
+  # datasets: ['market1501',]
+  datasets: ['dukemtmcreid',]
 
   # data loader
   LOADER:

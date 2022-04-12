@@ -26,6 +26,32 @@ CMC Scores:
 Testing time:  0:01:24.449394
 ```
 
+```yaml
+# 2022-04-11
+
+# config diff
+samples_per_gpu: 16 -> 8
+lr: 0.00035 -> 0.000035
+
+# performance on val dataset
+Mean AP: 81.4%
+CMC Scores:
+  top-1          91.4%
+  top-5          97.5%
+  top-10         98.8%
+Validating time:  0:00:09.783462
+* Finished epoch  49  mAP: 81.4%  best: 81.4% *
+
+# performance on test dataset
+Mean AP: 55.4%
+CMC Scores:
+  top-1          78.6%
+  top-5          91.6%
+  top-10         94.5%
+Testing time:  0:01:23.137315
+```
+> 调小学习率十分之一后，性能涨了十个点，但整体还是过拟合严重，下一步尝试将dropout调至0.5。
+
 2. market2duke
 
 ```yaml

@@ -52,6 +52,33 @@ Testing time:  0:01:23.137315
 ```
 > 调小学习率十分之一后，性能涨了十个点，但整体还是过拟合严重，下一步尝试将dropout调至0.5。
 
+```yaml
+# 2022-04-12
+
+# config diff
+samples_per_gpu: 16 -> 8
+lr: 0.00035 -> 0.000035
+dropout: 0. -> 0.5
+
+# performance on val dataset
+Mean AP: 77.2%
+CMC Scores:
+  top-1          88.9%
+  top-5          97.4%
+  top-10         98.8%
+Validating time:  0:00:09.780219
+* Finished epoch  49  mAP: 77.2%  best: 77.2% *
+
+# performance on test dataset
+Mean AP: 51.6%
+CMC Scores:
+  top-1          75.0%
+  top-5          90.1%
+  top-10         93.6%
+Testing time:  0:01:23.962190
+```
+> 加入dropout之后，依旧过拟合严重，并且验证精度与训练精度比原来还低好几个点。
+
 2. market2duke
 
 ```yaml
